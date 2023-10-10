@@ -1,0 +1,25 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+html {
+    background-color: rgb(187, 227, 128);
+    color: rgb(25, 20, 75);
+    font-size: 16px;
+    font-family: "Tahoma", sans-serif;
+}
+
+.hello {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+}
