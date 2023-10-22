@@ -1,30 +1,17 @@
-import { useState } from "react";
+import { useStore } from "effector-react";
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css"; // import first
 import { Button, Container } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
-import { apiRoot } from "@/api";
+import { ToastContainer } from "react-toastify";
 import { EmptyLine } from "@/EmptyLine";
+import { $addBlogItemStatus, addBlogItemFx } from "./model/some/state";
 
 export default function Home() {
-    const [state, setState] = useState("");
-    const [show, setShow] = useState(false);
-
-    const notify = () => toast.dark("Wow so easy!");
+    const { loading, error, data } = useStore($addBlogItemStatus);
 
     const functionToExecute = (event: React.FormEvent) => {
         event.preventDefault();
-        setShow(!show);
-        apiRoot
-            .get(`database`)
-            .then((response) => response.json())
-            .then((data) => {
-                setState(data as string);
-                if ((data as string).length > 3) toast.success("Все работает");
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        void addBlogItemFx();
     };
 
     return (
@@ -36,20 +23,18 @@ export default function Home() {
             </Head>
             <Container>
                 <EmptyLine />
-                <EmptyLine />
                 <div className="hello">
                     <div className="chil">Привет</div>
                     <EmptyLine />
-                    <Button onClick={notify}>Notify!</Button>
+                    <div className="chil">{String(loading)}</div>
                     <EmptyLine />
-                    <div hidden={show} className="chil">
-                        {state}
-                    </div>
+                    <div className="chil">{String(error)}</div>
+                    <EmptyLine />
+                    <div className="chil">{data}</div>
                     <EmptyLine />
                     <Button variant="secondary" onClick={(e) => functionToExecute(e)}>
-                        Нажать 2 раза
+                        Нажми меня
                     </Button>
-                    {/* <div className="chil">Hi privated {process.env.NEXT_PUBLIC_DB_NAME_DEV}</div> */}
                 </div>
             </Container>
         </>
