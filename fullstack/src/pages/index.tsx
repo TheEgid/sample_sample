@@ -1,13 +1,14 @@
-import { useStore } from "effector-react";
+import React from "react";
+import { useUnit } from "effector-react";
 import Head from "next/head";
-import "react-toastify/dist/ReactToastify.css"; // import first
+import "react-toastify/dist/ReactToastify.css";
 import { Button, Container } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import { EmptyLine } from "@/EmptyLine";
-import { $addBlogItemStatus, addBlogItemFx } from "./model/some/state";
+import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
-export default function Home() {
-    const { loading, error, data } = useStore($addBlogItemStatus);
+const Home: React.FC = () => {
+    const { loading, error, data } = useUnit($addBlogItemStatus);
 
     const functionToExecute = (event: React.FormEvent) => {
         event.preventDefault();
@@ -32,11 +33,13 @@ export default function Home() {
                     <EmptyLine />
                     <div className="chil">{data}</div>
                     <EmptyLine />
-                    <Button variant="secondary" onClick={(e) => functionToExecute(e)}>
+                    <Button variant="secondary" onClick={functionToExecute}>
                         Нажми меня
                     </Button>
                 </div>
             </Container>
         </>
     );
-}
+};
+
+export default Home;
