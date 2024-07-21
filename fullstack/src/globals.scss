@@ -6,7 +6,7 @@
 @import "../node_modules/bootstrap/scss/utilities";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
-html {
+#__next {
     background-color: rgb(187 227 128);
     color: rgb(25 20 75);
     font-family: Tahoma, sans-serif;
@@ -20,14 +20,26 @@ html {
     place-content: stretch space-around;
 }
 
-.fixed-window {
-    background-color: white;
-    border-radius: 5px;
-    bottom: 20px; /* Расстояние от нижнего края экрана */
+.image-container {
+    margin: 20px;
+    text-align: center;
+}
+
+.image {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    height: auto;
+}
+
+.fixed-calc-window {
+    background-color: rgb(255 255 255 / 80%); /* White with 80% opacity */
+    bottom: 15px;
     box-shadow: 0 0 10px rgb(0 0 0 / 50%);
-    height: 150px; /* Высота окна */
+    height: 150px;
+    overflow-y: auto;
     padding: 10px;
     position: fixed;
-    right: 20px;  /* Расстояние от правого края экрана */
-    width: 200px; /* Ширина окна */
+    right: 15px;
+    scrollbar-gutter: stable;
+    width: 800px;
 }

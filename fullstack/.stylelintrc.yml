@@ -3,6 +3,7 @@ plugins:
   - stylelint-order
 rules:
   selector-class-pattern: null
+  selector-id-pattern: null
   scss/at-extend-no-missing-placeholder: null
   scss/load-no-partial-leading-underscore: null
   rule-empty-line-before:
