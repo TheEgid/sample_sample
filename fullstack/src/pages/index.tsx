@@ -1,32 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useUnit } from "effector-react";
 import Head from "next/head";
-import "react-toastify/dist/ReactToastify.css";
-import Image from "next/image"
-import { Button, Container } from "react-bootstrap";
+import Image from "next/image";
+import { Button, Container, Spinner } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
-import { EmptyLine } from "@/EmptyLine";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
-const FixedWindow = () => {
-    const functionToExecute = (event: React.FormEvent) => {
-        event.preventDefault();
+const DataDisplayWithIncrement = (props: {
+    myData: string[]
+    onIncrementIndex: () => void
+}) => {
+    const { myData, onIncrementIndex } = props;
+
+    const functionToExecute = () => {
         void addBlogItemFx();
+        onIncrementIndex();
     };
 
     return (
-        <>
-
-            <div className="fixed-calc-window">
-                <p>
-                    <Button variant="secondary" onClick={functionToExecute}>
-                        Нажми меня
-                    </Button>
-                </p>
-                <p>Это прикрепленное окно 1</p>
-                <p>Это прикрепленное окно 2</p>
-            </div>
-        </>
+        <div className="fixed-calc-window">
+            <Button id="PushedButton" variant="warning" onClick={functionToExecute}>
+                Нажми
+            </Button>
+            <p></p>
+            {myData.map((data, index) => (
+                <p key={index}>{data?.length > 0 ? data : "_"}</p>
+            ))}
+        </div>
     );
 };
 
@@ -46,6 +46,16 @@ const ImageComponent = () => {
 
 const Home: React.FC = () => {
     const { loading, error, data } = useUnit($addBlogItemStatus);
+    const [allData, setAllData] = useState<string[]>([]);
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        if (data && data.length > 0) {
+            setAllData(prevData => [`${index} -- ${data}`, ...prevData]);
+        }
+    }, [data, index]);
+
+    const incrementIndex = () => setIndex(prevIndex => prevIndex + 1);
 
     return (
         <>
@@ -55,21 +65,17 @@ const Home: React.FC = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Container>
-                <EmptyLine />
                 <div className="hello">
-                    <div className="chil">Привет</div>
-                    <EmptyLine />
-                    <div className="chil">{loading}</div>
-                    <EmptyLine />
-                    <div className="chil">{error?.message || "без ошибок"}</div>
-                    <EmptyLine />
-                    <div className="chil">{(data.length > 0 && data) || "_"}</div>
+                    <p></p>
+                    <p>{error?.message || "без ошибок"}</p>
+                    <p style={{ height: "40px" }}>{loading ? <Spinner /> : "загружено"}</p>
+
                 </div>
                 <ImageComponent />
                 <ImageComponent />
                 <ImageComponent />
             </Container>
-            <FixedWindow />
+            <DataDisplayWithIncrement myData={allData} onIncrementIndex={incrementIndex} />
         </>
     );
 };
