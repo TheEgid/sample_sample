@@ -1,7 +1,7 @@
+import ky from "ky";
 import { KyInstance } from "ky/distribution/types/ky";
-import ky from "ky-universal";
 
-const apiUrl = `/api/`;
+const apiUrl = "/api/";
 
 export const apiRoot: KyInstance = ky.create({
     prefixUrl: apiUrl,

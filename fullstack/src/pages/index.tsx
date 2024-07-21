@@ -7,6 +7,14 @@ import { ToastContainer } from "react-toastify";
 import { EmptyLine } from "@/EmptyLine";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
+const FixedWindow = () => {
+    return (
+        <div className="fixed-window">
+            <p>Это прикрепленное окно</p>
+        </div>
+    );
+};
+
 const Home: React.FC = () => {
     const { loading, error, data } = useUnit($addBlogItemStatus);
 
@@ -27,17 +35,18 @@ const Home: React.FC = () => {
                 <div className="hello">
                     <div className="chil">Привет</div>
                     <EmptyLine />
-                    <div className="chil">{String(loading)}</div>
+                    <div className="chil">{loading}</div>
                     <EmptyLine />
-                    <div className="chil">{String(error)}</div>
+                    <div className="chil">{error?.message || "без ошибок"}</div>
                     <EmptyLine />
-                    <div className="chil">{data}</div>
+                    <div className="chil">{(data.length > 0 && data) || "_"}</div>
                     <EmptyLine />
                     <Button variant="secondary" onClick={functionToExecute}>
                         Нажми меня
                     </Button>
                 </div>
             </Container>
+            <FixedWindow />
         </>
     );
 };

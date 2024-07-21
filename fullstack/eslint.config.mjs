@@ -1,9 +1,11 @@
 import nextPlugin from "@next/eslint-plugin-next";
-import stylistic from "@stylistic/eslint-plugin";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
+import stylisticTs from "@stylistic/eslint-plugin-ts";
+import stylistic from "@stylistic/eslint-plugin";
 import importX from "eslint-plugin-import-x";
 import reactPlugin from "eslint-plugin-react";
+import nodeRecommended from "eslint-plugin-n";
 import hooksPlugin from "eslint-plugin-react-hooks";
 import sonarjs from "eslint-plugin-sonarjs";
 
@@ -19,40 +21,44 @@ export default [
                 tsconfigRootDir: import.meta.dirname,
             },
         },
+        settings: {
+            react: { version: "detect" }
+        },
         plugins: {
-            "@next/next": nextPlugin,
-            "import-x": importX,
             react: reactPlugin,
+            sonarjs,
+            "@next/next": nextPlugin,
+            import: importX,
             "react-hooks": hooksPlugin,
             "@stylistic": stylistic,
-            sonarjs,
+            "@stylistic/ts": stylisticTs,
             "@typescript-eslint": typescriptEslint,
+            nodeRecommended,
         },
-        settings: {react: {version: "detect"}},
         rules: {
-            ...typescriptEslint.configs.recommended.rules,
             ...reactPlugin.configs["jsx-runtime"].rules,
-            ...reactPlugin.configs.recommended.rules,
+            ...sonarjs.configs.recommended.rules,
+            ...typescriptEslint.configs.recommended.rules,
             ...hooksPlugin.configs.recommended.rules,
             ...nextPlugin.configs.recommended.rules,
-            ...nextPlugin.configs["core-web-vitals"].rules,
-            "@stylistic/no-multiple-empty-lines": [
-                "error",
-                {max: 1, maxBOF: 0, maxEOF: 0},
-            ],
+            ...stylistic.configs["recommended-flat"].rules,
+            "@stylistic/no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0, maxBOF: 1}],
             "@stylistic/lines-between-class-members": ["error", "always"],
+            "@stylistic/max-statements-per-line": ["error", { "max": 2 }],
             "@stylistic/padding-line-between-statements": [
                 "error",
-                {blankLine: "always", prev: ["const", "let", "var"], next: "*"},
-                {
-                    blankLine: "any",
-                    prev: ["const", "let", "var"],
-                    next: ["const", "let", "var"],
-                },
+                { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
+                { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
             ],
+            "@stylistic/semi": "off",
+            "@stylistic/indent-binary-ops": ["error", 4],
             "@stylistic/indent": ["error", 4],
-            "@stylistic/no-tabs": ["error", {allowIndentationTabs: true}],
+            "@stylistic/no-tabs": ["error", { allowIndentationTabs: true }],
             "@stylistic/jsx-quotes": ["warn", "prefer-double"],
+            "@stylistic/quotes": ["warn", "double"],
+            "@stylistic/comma-spacing": ["warn", { "before": false, "after": true }],
+            "@stylistic/jsx-indent-props": "off",
+            "@stylistic/arrow-parens": "off",
             "@next/next/no-duplicate-head": "off",
             "@next/next/no-img-element": "error",
             "@next/next/no-page-custom-font": "off",
@@ -61,31 +67,20 @@ export default [
             "react/jsx-equals-spacing": "warn",
             "react/jsx-wrap-multilines": "warn",
             "sonarjs/cognitive-complexity": ["error", 40],
-            "import-x/no-unresolved": "off",
-            "import-x/first": "error",
-            "import-x/named": "off",
-            "import-x/newline-after-import": "error",
-            "import-x/order": [
+            "sonarjs/no-duplicate-string": "warn",
+            'import/no-duplicates': 'error',
+            "import/no-unresolved": "off",
+            "import/first": "error",
+            "import/named": "off",
+            "import/newline-after-import": "error",
+            "import/order": [
                 "error",
                 {
-                    groups: [
-                        ["builtin", "external"],
-                        "internal",
-                        "parent",
-                        ["sibling", "index"],
-                        "object",
-                        "type",
-                    ],
-                    pathGroups: [
-                        {
-                            pattern: "react",
-                            group: "external",
-                            position: "before",
-                        },
-                    ],
+                    groups: [["builtin", "external"], "internal", "parent", ["sibling", "index"], "object", "type"],
+                    pathGroups: [{ pattern: "react", group: "external", position: "before" }],
                     pathGroupsExcludedImportTypes: ["react"],
                     "newlines-between": "never",
-                    alphabetize: {order: "asc", caseInsensitive: true},
+                    alphabetize: { order: "asc", caseInsensitive: true },
                 },
             ],
             "@typescript-eslint/no-explicit-any": "off",
@@ -94,8 +89,8 @@ export default [
             "@typescript-eslint/member-delimiter-style": [
                 "error",
                 {
-                    multiline: {delimiter: "none", requireLast: false},
-                    singleline: {delimiter: "comma", requireLast: false},
+                    multiline: { delimiter: "none", requireLast: false },
+                    singleline: { delimiter: "comma", requireLast: false },
                 },
             ],
             "@typescript-eslint/naming-convention": [
@@ -106,7 +101,6 @@ export default [
                     leadingUnderscore: "allow",
                 },
             ],
-            "@typescript-eslint/semi": "error",
             "@typescript-eslint/no-empty-function": "error",
             "@typescript-eslint/no-empty-interface": "error",
             "@typescript-eslint/no-floating-promises": "error",
@@ -121,7 +115,7 @@ export default [
             "@typescript-eslint/prefer-namespace-keyword": "error",
             "@typescript-eslint/triple-slash-reference": [
                 "error",
-                {path: "always", types: "prefer-import", lib: "always"},
+                { path: "always", types: "prefer-import", lib: "always" },
             ],
             "@typescript-eslint/unified-signatures": "error",
             "@typescript-eslint/no-unused-vars": [
@@ -156,75 +150,11 @@ export default [
             "object-shorthand": "error",
             "one-var": ["error", "never"],
             "prefer-const": "error",
-            "prefer-object-spread": "error",
-            "spaced-comment": ["error", "always", {markers: ["/"]}],
-            curly: "error",
+            "prefer-object-spread": "warn",
+            "spaced-comment": ["warn", "always", { markers: ["/"] }],
+            "curly": "error",
             "default-case": "error",
-            eqeqeq: ["error", "smart"],
-            "no-trailing-spaces": "error",
-            "no-multi-spaces": "error",
-            "react/boolean-prop-naming": [
-                "error",
-                {rule: "^(is|has)[A-Z]([A-Za-z0-9]?)+"},
-            ],
-            "react/button-has-type": "error",
-            "react/default-props-match-prop-types": [
-                "error",
-                {allowRequiredDefaults: false},
-            ],
-            "react/destructuring-assignment": ["warn", "always"],
-            "react/display-name": ["off", {ignoreTranspilerName: false}],
-            "react/forbid-component-props": ["off", {forbid: []}],
-            "react/forbid-dom-props": ["off", {forbid: []}],
-            "react/forbid-elements": ["off", {forbid: []}],
-            "react/forbid-foreign-prop-types": [
-                "warn",
-                {allowInPropTypes: true},
-            ],
-            "react/forbid-prop-types": [
-                "warn",
-                {
-                    forbid: ["any", "array", "object"],
-                    checkContextTypes: true,
-                    checkChildContextTypes: true,
-                },
-            ],
-            "react/function-component-definition": [
-                "off",
-                {
-                    namedComponents: "function-declaration",
-                    unnamedComponents: "function-expression",
-                },
-            ],
-            "react/hook-use-state": "off",
-            "react/iframe-missing-sandbox": "off",
-            "react/jsx-boolean-value": ["error", "never"],
-            "react/jsx-child-element-spacing": "off",
-            "react/jsx-closing-bracket-location": ["error", "line-aligned"],
-            "react/jsx-closing-tag-location": "error",
-            "react/jsx-curly-brace-presence": [
-                "error",
-                {props: "never", children: "never"},
-            ],
-            "react/jsx-curly-newline": [
-                "error",
-                {multiline: "consistent", singleline: "consistent"},
-            ],
-            "react/jsx-curly-spacing": [
-                "error",
-                {when: "never", children: true},
-            ],
-            "react/jsx-equals-spacing": ["error", "never"],
-            "react/jsx-first-prop-new-line": ["error", "multiline-multiprop"],
-            "react/jsx-fragments": ["error", "syntax"],
-            "react/jsx-handler-names": [
-                "off",
-                {eventHandlerPrefix: "handle", eventHandlerPropPrefix: "on"},
-            ],
-            "react/jsx-indent": ["error", 4],
-            "react/jsx-indent-props": ["error", 4],
-            "react/jsx-key": ["error", {checkFragmentShorthand: true}],
-            "react/jsx-max-depth": ["off", {max: 4}],
+            "eqeqeq": ["error", "smart"],
         },
     },
 ];

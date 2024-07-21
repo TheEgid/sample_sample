@@ -6,9 +6,9 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 const DATABASE_URL = "file:./database.db";
 
-export const prisma =
-    globalForPrisma.prisma ||
-    new PrismaClient({
+export const prisma
+    = globalForPrisma.prisma
+    || new PrismaClient({
         datasources: { db: { url: DATABASE_URL } },
         log: ["query", "info", "warn", "error"],
     });

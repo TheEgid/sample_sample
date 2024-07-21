@@ -6,7 +6,8 @@ async function checkPostgresConnection() {
         const users = await prisma.user.findMany().then((e) => e);
 
         return users && users[0].name;
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Ошибка подключения", error);
         return undefined;
     }
@@ -18,7 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const msg = await checkPostgresConnection().then((connected) => connected || "bad query (");
 
         res.status(200).json(msg);
-    } else {
+    }
+    else {
         res.status(405).send({ message: "Method not allowed" });
     }
 };

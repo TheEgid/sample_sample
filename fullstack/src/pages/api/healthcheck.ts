@@ -4,7 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === "GET") {
         res.status(200).send("OK");
-    } else {
+    }
+    else {
         res.status(405).send({ message: "Method not allowed" });
     }
 };
