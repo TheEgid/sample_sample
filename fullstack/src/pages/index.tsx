@@ -6,15 +6,20 @@ import { Button, Container, Spinner } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
-const DataDisplayWithIncrement = (props: {
-    myData: string[]
-    onIncrementIndex: () => void
-}) => {
-    const { myData, onIncrementIndex } = props;
+const DataDisplayWithIncrement = () => {
+    const { data } = useUnit($addBlogItemStatus);
+    const [allData, setAllData] = useState<string[]>([]);
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        if (data?.length) {
+            setAllData(prevData => [`${index} . -- ${data}`, ...prevData]);
+        }
+    }, [data, index]);
 
     const functionToExecute = () => {
         void addBlogItemFx();
-        onIncrementIndex();
+        setIndex(prevIndex => prevIndex + 1);
     };
 
     return (
@@ -23,8 +28,8 @@ const DataDisplayWithIncrement = (props: {
                 Нажми
             </Button>
             <p></p>
-            {myData.map((data, index) => (
-                <p key={index}>{data?.length > 0 ? data : "_"}</p>
+            {allData.map((x, index) => (
+                <p key={index}>{x?.length > 0 ? x : "_"}</p>
             ))}
         </div>
     );
@@ -39,23 +44,14 @@ const ImageComponent = () => {
                 className="image"
                 width={800}
                 height={500}
+                priority
             />
         </div>
     );
 };
 
 const Home: React.FC = () => {
-    const { loading, error, data } = useUnit($addBlogItemStatus);
-    const [allData, setAllData] = useState<string[]>([]);
-    const [index, setIndex] = useState(0);
-
-    useEffect(() => {
-        if (data && data.length > 0) {
-            setAllData(prevData => [`${index} -- ${data}`, ...prevData]);
-        }
-    }, [data, index]);
-
-    const incrementIndex = () => setIndex(prevIndex => prevIndex + 1);
+    const { loading, error } = useUnit($addBlogItemStatus);
 
     return (
         <>
@@ -66,16 +62,12 @@ const Home: React.FC = () => {
             </Head>
             <Container>
                 <div className="hello">
-                    <p></p>
                     <p>{error?.message || "без ошибок"}</p>
-                    <p style={{ height: "40px" }}>{loading ? <Spinner /> : "загружено"}</p>
-
+                    <div style={{ height: "40px" }}>{loading ? <Spinner /> : "загружено"}</div>
+                    {[...Array(3)].map((_, i) => (<ImageComponent key={i} />))}
                 </div>
-                <ImageComponent />
-                <ImageComponent />
-                <ImageComponent />
+                <DataDisplayWithIncrement />
             </Container>
-            <DataDisplayWithIncrement myData={allData} onIncrementIndex={incrementIndex} />
         </>
     );
 };
