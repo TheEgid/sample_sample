@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Button, Container, Spinner } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
+import FancyboxExample from "./ModalContent";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
 const DataDisplayWithIncrement = () => {
@@ -62,6 +63,7 @@ const Home: React.FC = () => {
             </Head>
             <Container>
                 <div className="hello">
+                    <FancyboxExample />
                     <p>{error?.message || "без ошибок"}</p>
                     <div style={{ height: "40px" }}>{loading ? <Spinner /> : "загружено"}</div>
                     {[...Array(3)].map((_, i) => (<ImageComponent key={i} />))}

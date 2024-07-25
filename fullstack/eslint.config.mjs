@@ -50,7 +50,7 @@ export default [
                 { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
                 { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
             ],
-            "@stylistic/semi": "off",
+            "@stylistic/semi": "warn",
             "@stylistic/indent-binary-ops": ["error", 4],
             "@stylistic/indent": ["error", 4],
             "@stylistic/no-tabs": ["error", { allowIndentationTabs: true }],
