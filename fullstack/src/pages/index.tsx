@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button, Container, Spinner } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import FancyboxExample from "./ModalContent";
+import NewElement from "./Sub";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
 const DataDisplayWithIncrement = () => {
@@ -62,6 +63,7 @@ const Home: React.FC = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Container>
+                <NewElement />
                 <div className="hello">
                     <FancyboxExample />
                     <p>{error?.message || "без ошибок"}</p>
