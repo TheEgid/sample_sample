@@ -4,6 +4,11 @@ export default {
     reactStrictMode: true,
     onDemandEntries: { maxInactiveAge: 25 * 10000 },
     images: {
-        domains: ['media.istockphoto.com'],
-    },
+        remotePatterns: [
+            {
+            protocol: 'https',
+            hostname: 'media.istockphoto.com',
+            },
+        ],
+    }
 };

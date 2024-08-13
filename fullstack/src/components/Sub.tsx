@@ -1,11 +1,10 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { listToTree } from "./tools";
+import { listToTree } from "@/pages/tools";
 
 export interface ITreeNode {
-    value: string
-    label: string
+    value: string,
+    label: string,
     children?: ITreeNode[]
 }
 
@@ -27,7 +26,7 @@ const NewElement = (): React.JSX.Element => {
 
     const itemsForDropdownCascade = listToTree(inputer);
 
-    const addNodeAndParents = (node: ITreeNode, path: string[], expandedNodes: Set<string>) => {
+    const addNodeAndParents = (node: ITreeNode, path: string[], expandedNodes: Set<string>): void => {
         const nodePath = [...path, node.label].join("|||");
 
         expandedNodes.add(nodePath);
@@ -37,7 +36,7 @@ const NewElement = (): React.JSX.Element => {
         });
     };
 
-    const handleButtonClick = (node: ITreeNode, path: string[]) => {
+    const handleButtonClick = (node: ITreeNode, path: string[]): void => {
         const newPath = [...path, node.label];
 
         setSelectedPath(newPath);
@@ -55,7 +54,7 @@ const NewElement = (): React.JSX.Element => {
         });
     };
 
-    const renderButtons = (nodes: ITreeNode[], path: string[]) => {
+    const renderButtons = (nodes: ITreeNode[], path: string[]): React.JSX.Element[] => {
         return nodes.map((node) => {
             const nodePath = [...path, node.label].join("|||");
             const isExpanded = expandedNodes.has(nodePath);
@@ -77,9 +76,7 @@ const NewElement = (): React.JSX.Element => {
                     </Button>
                     {node.children && isExpanded && (
                         <div>
-                            {/* <div style={{ marginLeft: "20px" }}> */}
                             {renderButtons(node.children, [...path, node.label])}
-                            {/* </div> */}
                         </div>
                     )}
                 </div>

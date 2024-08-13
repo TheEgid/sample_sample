@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "prisma/prisma";
 
-async function checkPostgresConnection() {
+async function checkPostgresConnection(): Promise<string | null | undefined> {
     try {
         const users = await prisma.user.findMany().then((e) => e);
 
@@ -14,7 +14,7 @@ async function checkPostgresConnection() {
 }
 
 // GET /api/database
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     if (req.method === "GET") {
         const msg = await checkPostgresConnection().then((connected) => connected || "bad query (");
 

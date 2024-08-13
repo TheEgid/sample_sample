@@ -4,11 +4,12 @@ import Head from "next/head";
 import Image from "next/image";
 import { Button, Container, Spinner } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
-import FancyboxExample from "./ModalContent";
-import NewElement from "./Sub";
+import ExpandableDiv from "@/components/ExpandableDiv";
+import FancyboxExample from "@/components/ModalContent";
+import NewElement from "@/components/Sub";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
-const DataDisplayWithIncrement = () => {
+const DataDisplayWithIncrement = (): React.JSX.Element => {
     const { data } = useUnit($addBlogItemStatus);
     const [allData, setAllData] = useState<string[]>([]);
     const [index, setIndex] = useState(0);
@@ -19,7 +20,7 @@ const DataDisplayWithIncrement = () => {
         }
     }, [data, index]);
 
-    const functionToExecute = () => {
+    const functionToExecute = (): void => {
         void addBlogItemFx();
         setIndex(prevIndex => prevIndex + 1);
     };
@@ -37,7 +38,7 @@ const DataDisplayWithIncrement = () => {
     );
 };
 
-const ImageComponent = () => {
+const ImageComponent = (): React.JSX.Element => {
     return (
         <div className="image-container">
             <Image
@@ -65,6 +66,7 @@ const Home: React.FC = () => {
             <Container>
                 <NewElement />
                 <div className="hello">
+                    <ExpandableDiv />
                     <FancyboxExample />
                     <p>{error?.message || "без ошибок"}</p>
                     <div style={{ height: "40px" }}>{loading ? <Spinner /> : "загружено"}</div>

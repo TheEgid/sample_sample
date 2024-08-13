@@ -1,4 +1,4 @@
-import { ITreeNode } from "./Sub";
+import { ITreeNode } from "@/components/Sub";
 
 export const listToTree = (arr: { parentsList: string[] }[]): ITreeNode[] => {
     const rootNodes: ITreeNode[] = [];

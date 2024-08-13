@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { Fancybox as FancyboxNative } from "@fancyapps/ui";
 import { Button } from "react-bootstrap";
 
-const FancyboxExample = () => {
+const FancyboxExample = (): React.JSX.Element => {
     useEffect(() => {
         FancyboxNative.bind("[data-fancybox]", {});
 
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         return () => {
             FancyboxNative.destroy();
         };

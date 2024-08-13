@@ -21,9 +21,7 @@ export default [
                 tsconfigRootDir: import.meta.dirname,
             },
         },
-        settings: {
-            react: { version: "detect" }
-        },
+        settings: { react: { version: "detect" } },
         plugins: {
             react: reactPlugin,
             sonarjs,
@@ -42,13 +40,19 @@ export default [
             ...hooksPlugin.configs.recommended.rules,
             ...nextPlugin.configs.recommended.rules,
             ...stylistic.configs["recommended-flat"].rules,
-            "@stylistic/no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0, maxBOF: 1}],
+            "sonarjs/cognitive-complexity": ["error", 40],
+            "sonarjs/no-duplicate-string": "off",
+            "@stylistic/no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0, maxBOF: 1 }],
             "@stylistic/lines-between-class-members": ["error", "always"],
-            "@stylistic/max-statements-per-line": ["error", { "max": 2 }],
+            "@stylistic/max-statements-per-line": ["error", { max: 2 }],
             "@stylistic/padding-line-between-statements": [
                 "error",
                 { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
                 { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
+            ],
+            "@stylistic/member-delimiter-style": [
+                "error",
+                { multiline: { delimiter: "comma", requireLast: false }, singleline: { delimiter: "comma", requireLast: false } },
             ],
             "@stylistic/semi": "warn",
             "@stylistic/indent-binary-ops": ["error", 4],
@@ -56,7 +60,7 @@ export default [
             "@stylistic/no-tabs": ["error", { allowIndentationTabs: true }],
             "@stylistic/jsx-quotes": ["warn", "prefer-double"],
             "@stylistic/quotes": ["warn", "double"],
-            "@stylistic/comma-spacing": ["warn", { "before": false, "after": true }],
+            "@stylistic/comma-spacing": ["warn", { before: false, after: true }],
             "@stylistic/jsx-indent-props": "off",
             "@stylistic/arrow-parens": "off",
             "@next/next/no-duplicate-head": "off",
@@ -66,9 +70,7 @@ export default [
             "react/jsx-curly-spacing": "warn",
             "react/jsx-equals-spacing": "warn",
             "react/jsx-wrap-multilines": "warn",
-            "sonarjs/cognitive-complexity": ["error", 40],
-            "sonarjs/no-duplicate-string": "warn",
-            'import/no-duplicates': 'error',
+            "import/no-duplicates": "error",
             "import/no-unresolved": "off",
             "import/first": "error",
             "import/named": "off",
@@ -84,15 +86,9 @@ export default [
                 },
             ],
             "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/explicit-function-return-type": "error",
             "@typescript-eslint/adjacent-overload-signatures": "error",
             "@typescript-eslint/consistent-type-assertions": "error",
-            "@typescript-eslint/member-delimiter-style": [
-                "error",
-                {
-                    multiline: { delimiter: "none", requireLast: false },
-                    singleline: { delimiter: "comma", requireLast: false },
-                },
-            ],
             "@typescript-eslint/naming-convention": [
                 "error",
                 {
@@ -113,10 +109,7 @@ export default [
             "@typescript-eslint/prefer-for-of": "error",
             "@typescript-eslint/prefer-function-type": "error",
             "@typescript-eslint/prefer-namespace-keyword": "error",
-            "@typescript-eslint/triple-slash-reference": [
-                "error",
-                { path: "always", types: "prefer-import", lib: "always" },
-            ],
+            "@typescript-eslint/triple-slash-reference": ["error", { path: "always", types: "prefer-import", lib: "always" }],
             "@typescript-eslint/unified-signatures": "error",
             "@typescript-eslint/no-unused-vars": [
                 "warn",
@@ -152,9 +145,9 @@ export default [
             "prefer-const": "error",
             "prefer-object-spread": "warn",
             "spaced-comment": ["warn", "always", { markers: ["/"] }],
-            "curly": "error",
+            curly: "error",
             "default-case": "error",
-            "eqeqeq": ["error", "smart"],
+            eqeqeq: ["error", "smart"],
         },
     },
 ];
