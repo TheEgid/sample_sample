@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { listToTree } from "./tools";
@@ -9,35 +10,23 @@ export interface ITreeNode {
 }
 
 const inputer = [
-    {
-        parentsList: ["AAAAAAAAAA", "B1"],
-    },
-    {
-        parentsList: ["AAAAAAAAAA", "B2"],
-    },
-    {
-        parentsList: ["сооружения", "O1"],
-    },
-    {
-        parentsList: ["сооружения", "O2"],
-    },
-    {
-        parentsList: ["сооружения", "O3", "O3_sub1"],
-    },
-    {
-        parentsList: ["сооружения", "O3", "O3_sub1", "O3_sub1_sub1"],
-    },
-    {
-        parentsList: ["сооружения", "O3", "O3_sub2"],
-    },
+    { parentsList: ["AAAAAAAAAA", "B1"] },
+    { parentsList: ["AAAAAAAAAA", "B2"] },
+    { parentsList: ["сооружения", "O1"] },
+    { parentsList: ["сооружения", "O2"] },
+    { parentsList: ["сооружения", "O3", "O3_sub1"] },
+    { parentsList: ["сооружения", "O3", "O3_sub1", "O3_sub1_sub1"] },
+    { parentsList: ["сооружения", "O3", "O3_sub2"] },
 ];
 
 const NewElement = (): React.JSX.Element => {
     const [selectedPath, setSelectedPath] = useState<string[]>([]);
     const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+
+    const [lastClickedPath, setLastClickedPath] = useState<string[]>([]);
+
     const itemsForDropdownCascade = listToTree(inputer);
 
-    // Recursively add nodes and their parents to the expandedNodes set
     const addNodeAndParents = (node: ITreeNode, path: string[], expandedNodes: Set<string>) => {
         const nodePath = [...path, node.label].join("|||");
 
@@ -48,34 +37,20 @@ const NewElement = (): React.JSX.Element => {
         });
     };
 
-    // Clear expanded nodes except those in the selected branch
-    const calculateExpandedNodes = (node: ITreeNode, path: string[], expandedNodes: Set<string>) => {
-        const newExpandedNodes = new Set<string>();
-
-        // Add selected path and its ancestors
-        addNodeAndParents(node, path, newExpandedNodes);
-
-        return newExpandedNodes;
-    };
-
     const handleButtonClick = (node: ITreeNode, path: string[]) => {
         const newPath = [...path, node.label];
 
         setSelectedPath(newPath);
+        setLastClickedPath(newPath);
 
-        // Calculate the new set of expanded nodes
-        setExpandedNodes((prevExpandedNodes) => {
+        setExpandedNodes(() => {
             const newExpandedNodes = new Set<string>();
 
-            // For each root node, if it is in the selected branch, add its descendants
             itemsForDropdownCascade.forEach((rootNode) => {
                 const isInSelectedBranch = [...newPath].includes(rootNode.label);
 
-                if (isInSelectedBranch) {
-                    addNodeAndParents(rootNode, [], newExpandedNodes);
-                }
+                if (isInSelectedBranch) { addNodeAndParents(rootNode, [], newExpandedNodes); }
             });
-
             return newExpandedNodes;
         });
     };
@@ -84,18 +59,27 @@ const NewElement = (): React.JSX.Element => {
         return nodes.map((node) => {
             const nodePath = [...path, node.label].join("|||");
             const isExpanded = expandedNodes.has(nodePath);
+            const isLastClicked = JSON.stringify(lastClickedPath) === JSON.stringify([...path, node.label]);
 
             return (
-                <div key={node.value} style={{ marginLeft: "10px" }}>
+                <div key={node.value} style={{ marginLeft: "30px" }}>
                     <Button
                         onClick={() => handleButtonClick(node, path)}
-                        style={{ marginBottom: "5px", width: "200px" }}
+                        style={{
+                            marginBottom: "5px",
+                            width: "200px",
+                            backgroundColor: isLastClicked ? "lightblue" : undefined,
+                            borderColor: isLastClicked ? "blue" : undefined,
+                            color: isLastClicked ? "blue" : undefined,
+                        }}
                     >
                         {node.label}
                     </Button>
                     {node.children && isExpanded && (
-                        <div style={{ marginLeft: "20px" }}>
+                        <div>
+                            {/* <div style={{ marginLeft: "20px" }}> */}
                             {renderButtons(node.children, [...path, node.label])}
+                            {/* </div> */}
                         </div>
                     )}
                 </div>
