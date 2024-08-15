@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import { listToTree } from "@/pages/tools";
 
 export interface ITreeNode {
@@ -36,7 +35,7 @@ const NewElement = (): React.JSX.Element => {
         });
     };
 
-    const handleButtonClick = (node: ITreeNode, path: string[]): void => {
+    const handleLinkClick = (node: ITreeNode, path: string[]): void => {
         const newPath = [...path, node.label];
 
         setSelectedPath(newPath);
@@ -54,29 +53,30 @@ const NewElement = (): React.JSX.Element => {
         });
     };
 
-    const renderButtons = (nodes: ITreeNode[], path: string[]): React.JSX.Element[] => {
+    const renderLinks = (nodes: ITreeNode[], path: string[], level: number = 0): React.JSX.Element[] => {
         return nodes.map((node) => {
             const nodePath = [...path, node.label].join("|||");
             const isExpanded = expandedNodes.has(nodePath);
             const isLastClicked = JSON.stringify(lastClickedPath) === JSON.stringify([...path, node.label]);
 
             return (
-                <div key={node.value} style={{ marginLeft: "30px" }}>
-                    <Button
-                        onClick={() => handleButtonClick(node, path)}
+                <div key={node.value}>
+                    <a
+                        onClick={() => handleLinkClick(node, path)}
                         style={{
-                            marginBottom: "5px",
-                            width: "200px",
-                            backgroundColor: isLastClicked ? "lightblue" : undefined,
-                            borderColor: isLastClicked ? "blue" : undefined,
-                            color: isLastClicked ? "blue" : undefined,
+                            display: "inline-block",
+                            cursor: "pointer",
+                            textDecoration: isLastClicked ? "underline" : "none",
+                            color: isLastClicked ? "blue" : "black",
+                            fontWeight: isLastClicked ? "bold" : "normal",
+                            whiteSpace: "pre", // To respect the indentation in text
                         }}
                     >
-                        {node.label}
-                    </Button>
+                        {"| " + "— ".repeat(level) + node.label}
+                    </a>
                     {node.children && isExpanded && (
                         <div>
-                            {renderButtons(node.children, [...path, node.label])}
+                            {renderLinks(node.children, [...path, node.label], level + 1)}
                         </div>
                     )}
                 </div>
@@ -88,7 +88,7 @@ const NewElement = (): React.JSX.Element => {
         <>
             <div>
                 <div>Категория</div>
-                <div>{renderButtons(itemsForDropdownCascade, [])}</div>
+                <div>{renderLinks(itemsForDropdownCascade, [])}</div>
             </div>
             <div style={{ marginTop: "10px" }}>
                 <strong>Выбранная категория: </strong>
