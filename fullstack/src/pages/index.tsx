@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import ExpandableDiv from "@/components/ExpandableDiv";
 import FancyboxExample from "@/components/ModalContent";
 import NewElement from "@/components/Sub";
+import { submitSecurityIsProtectionOther } from "@/model/some/current-petition-state";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
 const DataDisplayWithIncrement = (): React.JSX.Element => {
@@ -16,22 +17,26 @@ const DataDisplayWithIncrement = (): React.JSX.Element => {
 
     useEffect(() => {
         if (data?.length) {
-            setAllData(prevData => [`${index} . -- ${data}`, ...prevData]);
+            setAllData((prevData: any) => [`${index} . -- ${data}`, ...prevData]);
         }
     }, [data, index]);
 
-    const functionToExecute = (): void => {
-        void addBlogItemFx();
-        setIndex(prevIndex => prevIndex + 1);
+    const functionToExecute = async (): Promise<void> => {
+        await addBlogItemFx();
+
+        submitSecurityIsProtectionOther({ bValue: allData.length % 2 === 0 });
+
+        setIndex((prevIndex: number) => prevIndex + 1);
     };
 
     return (
         <div className="fixed-calc-window">
-            <Button id="PushedButton" variant="warning" onClick={functionToExecute}>
+            <Button id="PushedButton" variant="warning" onClick={() => void functionToExecute()}>
                 Нажми
             </Button>
             <p></p>
-            {allData.map((x, index) => (
+            {allData.map((x: any, index: number) => (
+                // eslint-disable-next-line sonarjs/no-array-index-key
                 <p key={index}>{x?.length > 0 ? x : "_"}</p>
             ))}
         </div>
@@ -68,9 +73,9 @@ const Home: React.FC = () => {
                 <div className="hello">
                     <ExpandableDiv />
                     <FancyboxExample />
-                    <p>{error?.message || "без ошибок"}</p>
+                    <p>{error?.message ?? "без ошибок"}</p>
                     <div style={{ height: "40px" }}>{loading ? <Spinner /> : "загружено"}</div>
-                    {[...Array(3)].map((_, i) => (<ImageComponent key={i} />))}
+                    {[...Array(3)].map((_, i) => (<ImageComponent key={`i${i + 1}`} />))}
                 </div>
                 <DataDisplayWithIncrement />
             </Container>

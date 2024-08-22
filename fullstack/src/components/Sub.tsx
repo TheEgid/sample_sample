@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable sonarjs/mouse-events-a11y */
+/* eslint-disable sonarjs/anchor-is-valid */
+import React, { useState, useEffect } from "react";
 import { listToTree } from "@/pages/tools";
 
 export interface ITreeNode {
@@ -17,10 +19,13 @@ const inputer = [
     { parentsList: ["сооружения", "O3", "O3_sub2"] },
 ];
 
+const checkedPoint = "O1"; // Checked point
+
+// ПРИМЕР 1
+
 const NewElement = (): React.JSX.Element => {
     const [selectedPath, setSelectedPath] = useState<string[]>([]);
     const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
-
     const [lastClickedPath, setLastClickedPath] = useState<string[]>([]);
 
     const itemsForDropdownCascade = listToTree(inputer);
@@ -34,6 +39,49 @@ const NewElement = (): React.JSX.Element => {
             addNodeAndParents(child, [...path, node.label], expandedNodes);
         });
     };
+
+    const findCheckedPointPath = (node: ITreeNode, path: string[]): string[] | null => {
+        const newPath = [...path, node.label];
+
+        if (node.label === checkedPoint) {
+            return newPath;
+        }
+
+        if (node.children) {
+            for (const child of node.children) {
+                const result = findCheckedPointPath(child, newPath);
+
+                if (result) { return result; }
+            }
+        }
+
+        return null;
+    };
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const initializeExpandedNodes = () => {
+        const newExpandedNodes = new Set<string>();
+
+        itemsForDropdownCascade.forEach((rootNode) => {
+            const checkedPath = findCheckedPointPath(rootNode, []);
+
+            if (checkedPath) {
+                checkedPath.forEach((label, index) => {
+                    const path = checkedPath.slice(0, index + 1).join("|||");
+
+                    newExpandedNodes.add(path);
+                });
+                setSelectedPath(checkedPath);
+                setLastClickedPath(checkedPath);
+            }
+        });
+
+        return newExpandedNodes;
+    };
+
+    useEffect(() => {
+        setExpandedNodes(initializeExpandedNodes());
+    }, []);
 
     const handleLinkClick = (node: ITreeNode, path: string[]): void => {
         const newPath = [...path, node.label];
@@ -49,6 +97,7 @@ const NewElement = (): React.JSX.Element => {
 
                 if (isInSelectedBranch) { addNodeAndParents(rootNode, [], newExpandedNodes); }
             });
+
             return newExpandedNodes;
         });
     };
