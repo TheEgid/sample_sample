@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import ExpandableDiv from "@/components/ExpandableDiv";
 import FancyboxExample from "@/components/ModalContent";
 import NewElement from "@/components/Sub";
-import { setRiskIsTerrorismFx, setSecurityIsProtectionOtherFx } from "@/model/some/current-petition-state";
+import { setPetitionFieldFx } from "@/model/some/current-petition-state";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
 const DataDisplayWithIncrement = (): React.JSX.Element => {
@@ -24,8 +24,8 @@ const DataDisplayWithIncrement = (): React.JSX.Element => {
     const functionToExecute = async (): Promise<void> => {
         await addBlogItemFx();
 
-        setSecurityIsProtectionOtherFx({ bValue: allData.length % 2 === 0 });
-        setRiskIsTerrorismFx({ bValue: allData.length % 2 === 0 });
+        setPetitionFieldFx({ field: "petSecurityIsProtectionOther", value: allData.length % 2 === 0 });
+        setPetitionFieldFx({ field: "petRiskIsTerrorism", value: allData.length % 2 === 0 });
 
         setIndex((prevIndex: number) => prevIndex + 1);
     };

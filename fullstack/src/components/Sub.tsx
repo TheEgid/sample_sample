@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/mouse-events-a11y */
 /* eslint-disable sonarjs/anchor-is-valid */
 import React, { useState, useEffect } from "react";
-import { listToTree } from "@/pages/tools";
+import { listToTree } from "@/tools";
 
 export interface ITreeNode {
     value: string,

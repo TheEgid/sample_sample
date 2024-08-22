@@ -14,33 +14,28 @@ export const initialPetition: IPetitionFormValues = {
 
 export const $currentPetitionStore = createStore(initialPetition, { skipVoid: false });
 
-export const setSecurityIsProtectionOtherFx = createEvent<{ bValue: boolean }>();
+// Create events
+export const setPetitionFieldFx = createEvent<{ field: keyof IPetitionFormValues, value: boolean }>();
 
-export const updateSecurityEffect = createEffect<{ bValue: boolean }, IPetitionFormValues>({
-    handler: ({ bValue }) => ({ ...$currentPetitionStore.getState(), petSecurityIsProtectionOther: bValue }),
+// Create effect to handle updates
+export const updatePetitionEffect = createEffect<{ field: keyof IPetitionFormValues, value: boolean }, IPetitionFormValues>({
+    handler: ({ field, value }) => ({
+        ...$currentPetitionStore.getState(),
+        [field]: value,
+    }),
 });
 
+// Sample events to trigger effect
 sample({
-    clock: setSecurityIsProtectionOtherFx,
-    source: setSecurityIsProtectionOtherFx,
-    target: updateSecurityEffect,
+    clock: setPetitionFieldFx,
+    source: setPetitionFieldFx,
+    target: updatePetitionEffect,
 });
 
-export const setRiskIsTerrorismFx = createEvent<{ bValue: boolean }>();
+// Update store with new values
+$currentPetitionStore.on(updatePetitionEffect.doneData, (_state, updatedPetition) => updatedPetition);
 
-export const updateRiskEffect = createEffect<{ bValue: boolean }, IPetitionFormValues>({
-    handler: ({ bValue }) => ({ ...$currentPetitionStore.getState(), petRiskIsTerrorism: bValue }),
-});
-
-sample({
-    clock: setRiskIsTerrorismFx,
-    source: setRiskIsTerrorismFx,
-    target: updateRiskEffect,
-});
-
-$currentPetitionStore.on(updateSecurityEffect.doneData, (_state, updatedPetition) => updatedPetition);
-$currentPetitionStore.on(updateRiskEffect.doneData, (_state, updatedPetition) => updatedPetition);
-
+// Watch for changes in the store
 $currentPetitionStore.watch((el) => {
     console.log(el);
 });

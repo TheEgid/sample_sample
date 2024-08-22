@@ -5,7 +5,7 @@ async function checkPostgresConnection(): Promise<string | null | undefined> {
     try {
         const users = await prisma.user.findMany().then((e) => e);
 
-        return users && users[0].name;
+        return users?.[0].name;
     }
     catch (error) {
         console.error("Ошибка подключения", error);
@@ -16,7 +16,7 @@ async function checkPostgresConnection(): Promise<string | null | undefined> {
 // GET /api/database
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     if (req.method === "GET") {
-        const msg = await checkPostgresConnection().then((connected) => connected || "bad query (");
+        const msg = await checkPostgresConnection().then((connected) => connected ?? "bad query (");
 
         res.status(200).json(msg);
     }
