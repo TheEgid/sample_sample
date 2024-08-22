@@ -1,4 +1,4 @@
-import { createEvent, createStore } from "effector";
+import { createEvent, createStore, createEffect, sample } from "effector";
 
 export interface IPetitionFormValues {
     petInsurerContactPhone: string,
@@ -14,9 +14,20 @@ export const initialPetition: IPetitionFormValues = {
 
 export const $currentPetitionStore = createStore(initialPetition, { skipVoid: false });
 
-export const submitSecurityIsProtectionOther = createEvent<{ bValue: boolean }>();
+//
+export const fixSecurityIsProtectionOther = createEvent<{ bValue: boolean }>();
 
-$currentPetitionStore.on(submitSecurityIsProtectionOther, (state, { bValue }) => ({ ...state, petIsSecurityIsProtectionOther: bValue }));
+export const updatePetitionEffect = createEffect<{ bValue: boolean }, IPetitionFormValues>({
+    handler: ({ bValue }) => ({ ...$currentPetitionStore.getState(), petIsSecurityIsProtectionOther: bValue }),
+});
+
+sample({
+    clock: fixSecurityIsProtectionOther,
+    source: fixSecurityIsProtectionOther,
+    target: updatePetitionEffect,
+});
+
+$currentPetitionStore.on(updatePetitionEffect.doneData, (_state, updatedPetition) => updatedPetition);
 
 $currentPetitionStore.watch((el) => {
     console.log(el);
