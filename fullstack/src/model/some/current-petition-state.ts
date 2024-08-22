@@ -2,32 +2,44 @@ import { createEvent, createStore, createEffect, sample } from "effector";
 
 export interface IPetitionFormValues {
     petInsurerContactPhone: string,
-    petInsurerContactEmail: string,
-    petIsSecurityIsProtectionOther: boolean
+    petRiskIsTerrorism: boolean,
+    petSecurityIsProtectionOther: boolean
 }
 
 export const initialPetition: IPetitionFormValues = {
     petInsurerContactPhone: "",
-    petInsurerContactEmail: "",
-    petIsSecurityIsProtectionOther: true,
+    petRiskIsTerrorism: false,
+    petSecurityIsProtectionOther: false,
 };
 
 export const $currentPetitionStore = createStore(initialPetition, { skipVoid: false });
 
-//
-export const fixSecurityIsProtectionOther = createEvent<{ bValue: boolean }>();
+export const setSecurityIsProtectionOtherFx = createEvent<{ bValue: boolean }>();
 
-export const updatePetitionEffect = createEffect<{ bValue: boolean }, IPetitionFormValues>({
-    handler: ({ bValue }) => ({ ...$currentPetitionStore.getState(), petIsSecurityIsProtectionOther: bValue }),
+export const updateSecurityEffect = createEffect<{ bValue: boolean }, IPetitionFormValues>({
+    handler: ({ bValue }) => ({ ...$currentPetitionStore.getState(), petSecurityIsProtectionOther: bValue }),
 });
 
 sample({
-    clock: fixSecurityIsProtectionOther,
-    source: fixSecurityIsProtectionOther,
-    target: updatePetitionEffect,
+    clock: setSecurityIsProtectionOtherFx,
+    source: setSecurityIsProtectionOtherFx,
+    target: updateSecurityEffect,
 });
 
-$currentPetitionStore.on(updatePetitionEffect.doneData, (_state, updatedPetition) => updatedPetition);
+export const setRiskIsTerrorismFx = createEvent<{ bValue: boolean }>();
+
+export const updateRiskEffect = createEffect<{ bValue: boolean }, IPetitionFormValues>({
+    handler: ({ bValue }) => ({ ...$currentPetitionStore.getState(), petRiskIsTerrorism: bValue }),
+});
+
+sample({
+    clock: setRiskIsTerrorismFx,
+    source: setRiskIsTerrorismFx,
+    target: updateRiskEffect,
+});
+
+$currentPetitionStore.on(updateSecurityEffect.doneData, (_state, updatedPetition) => updatedPetition);
+$currentPetitionStore.on(updateRiskEffect.doneData, (_state, updatedPetition) => updatedPetition);
 
 $currentPetitionStore.watch((el) => {
     console.log(el);
