@@ -42,6 +42,7 @@ export default [
             ...stylistic.configs["recommended-flat"].rules,
             "sonarjs/cognitive-complexity": ["error", 40],
             "sonarjs/no-duplicate-string": "off",
+            "sonarjs/no-commented-code": "off",
             "@stylistic/no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0, maxBOF: 1 }],
             "@stylistic/lines-between-class-members": ["error", "always"],
             "@stylistic/max-statements-per-line": ["error", { max: 2 }],

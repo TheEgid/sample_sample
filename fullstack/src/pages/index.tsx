@@ -26,6 +26,7 @@ const DataDisplayWithIncrement = (): React.JSX.Element => {
 
         setPetitionFieldFx({ field: "petSecurityIsProtectionOther", value: allData.length % 2 === 0 });
         setPetitionFieldFx({ field: "petRiskIsTerrorism", value: allData.length % 2 === 0 });
+        setPetitionFieldFx({ field: "petRiskIsDog", value: allData.length % 2 === 0 });
 
         setIndex((prevIndex: number) => prevIndex + 1);
     };
