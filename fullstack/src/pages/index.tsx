@@ -7,13 +7,15 @@ import { ToastContainer } from "react-toastify";
 import ExpandableDiv from "@/components/ExpandableDiv";
 import FancyboxExample from "@/components/ModalContent";
 import NewElement from "@/components/Sub";
-import { setPetitionFieldFx } from "@/model/some/current-petition-state";
+// eslint-disable-next-line sonarjs/unused-import, @typescript-eslint/no-unused-vars
+import { $currentPetitionStore, setPetitionFieldFx } from "@/model/some/current-petition-state";
 import { $addBlogItemStatus, addBlogItemFx } from "@/model/some/state";
 
 const DataDisplayWithIncrement = (): React.JSX.Element => {
     const { data } = useUnit($addBlogItemStatus);
     const [allData, setAllData] = useState<string[]>([]);
     const [index, setIndex] = useState(0);
+    const current = useUnit($currentPetitionStore);
 
     useEffect(() => {
         if (data?.length) {
@@ -24,9 +26,15 @@ const DataDisplayWithIncrement = (): React.JSX.Element => {
     const functionToExecute = async (): Promise<void> => {
         await addBlogItemFx();
 
-        setPetitionFieldFx({ field: "petSecurityIsProtectionOther", value: allData.length % 2 === 0 });
-        setPetitionFieldFx({ field: "petRiskIsTerrorism", value: allData.length % 2 === 0 });
-        setPetitionFieldFx({ field: "petRiskIsDog", value: allData.length % 2 === 0 });
+        // setPetitionFieldFx({ field: "petSecurityIsProtectionOther", value: allData.length % 2 === 0 });
+        // setPetitionFieldFx({ field: "petRiskIsBeda", value: allData.length % 2 === 0 });
+        // setPetitionFieldFx({ field: "petRiskIsDog", value: allData.length % 2 === 0 });
+
+        console.log(current);
+
+        const filteredKeys = Object.keys(current).filter(key => !["petRiskIsBeda", "petRiskIsCat"].includes(key));
+
+        console.log(filteredKeys);
 
         setIndex((prevIndex: number) => prevIndex + 1);
     };

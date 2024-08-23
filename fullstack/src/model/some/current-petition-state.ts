@@ -3,7 +3,7 @@ import { ValueOf } from "next/dist/shared/lib/constants";
 
 export interface IPetitionFormValues {
     petInsurerContactPhone: string,
-    petRiskIsTerrorism: boolean,
+    petRiskIsBeda: boolean,
     petRiskIsCat: boolean,
     petRiskIsDog: boolean,
     petSecurityIsProtectionOther: boolean
@@ -11,11 +11,15 @@ export interface IPetitionFormValues {
 
 export const initialPetition: IPetitionFormValues = {
     petInsurerContactPhone: "",
-    petRiskIsTerrorism: false,
+    petRiskIsBeda: false,
     petRiskIsCat: false,
     petRiskIsDog: false,
     petSecurityIsProtectionOther: false,
 };
+
+// Object { petInsurerContactPhone: "", petRiskIsBeda: false, petRiskIsCat: false, petRiskIsDog: false, petSecurityIsProtectionOther: false }
+
+// получить из объекта маасв ешл ключей без  petRiskIsBeda и petRiskIsCat
 
 export const $currentPetitionStore = createStore<IPetitionFormValues>(initialPetition, { skipVoid: false });
 
