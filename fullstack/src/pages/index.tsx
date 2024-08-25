@@ -7,10 +7,12 @@ import { ChBxes, DataDisplayWithIncrement, ImageComponent } from "./ElementsOthe
 import ExpandableDiv from "@/components/ExpandableDiv";
 import FancyboxExample from "@/components/ModalContent";
 import NewElement from "@/components/Sub";
+import { $currentPetitionStore } from "@/model/some/current-petition-state";
 import { $addBlogItemStatus } from "@/model/some/state";
 
 const Home: React.FC = () => {
     const { loading, error } = useUnit($addBlogItemStatus);
+    const { computedFieldChecker } = useUnit($currentPetitionStore);
 
     return (
         <>
@@ -20,6 +22,10 @@ const Home: React.FC = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Container>
+                <div>{computedFieldChecker}</div>
+                <div style={{ display: "flex" }}>
+                    <ChBxes />
+                </div>
                 <NewElement />
                 <div className="hello">
                     <ExpandableDiv />
@@ -29,11 +35,7 @@ const Home: React.FC = () => {
                     {[...Array(1)].map((_, i) => (<ImageComponent key={`i${i + 1}`} />))}
                 </div>
                 <DataDisplayWithIncrement />
-                <div style={{ display: "flex" }}>
-                    <ChBxes />
-                </div>
             </Container>
-
         </>
     );
 };

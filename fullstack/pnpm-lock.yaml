@@ -1452,8 +1452,8 @@ packages:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
 
-  caniuse-lite@1.0.30001651:
-    resolution: {integrity: sha512-9Cf+Xv1jJNe1xPZLGuUXLNkE1BoDkqRqYyFJ9TDYSqhduqA4hu4oR9HluGoWYQC/aj8WHjsGVV+bwkh0+tegRg==}
+  caniuse-lite@1.0.30001653:
+    resolution: {integrity: sha512-XGWQVB8wFQ2+9NZwZ10GxTYC5hk0Fa+q8cSkr0tgvMhYhMHP/QC+WTgrePMDBWiWc/pV+1ik82Al20XOK25Gcw==}
 
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -2863,8 +2863,8 @@ packages:
     peerDependencies:
       stylelint: ^14.0.0 || ^15.0.0 || ^16.0.1
 
-  stylelint-scss@6.5.0:
-    resolution: {integrity: sha512-yOnYlr71wrTPT3rYyUurgTj6Rw7JUtzsZQsiPEjvs+k/yqoYHdweqpw6XN/ARpxjAuvJpddoMUvV8aAIpvUwTg==}
+  stylelint-scss@6.5.1:
+    resolution: {integrity: sha512-ZLqdqihm6uDYkrsOeD6YWb+stZI8Wn92kUNDhE4M+g9g1aCnRv0JlOrttFiAJJwaNzpdQgX3YJb5vDQXVuO9Ww==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       stylelint: ^16.0.2
@@ -4793,7 +4793,7 @@ snapshots:
 
   browserslist@4.23.3:
     dependencies:
-      caniuse-lite: 1.0.30001651
+      caniuse-lite: 1.0.30001653
       electron-to-chromium: 1.5.13
       node-releases: 2.0.18
       update-browserslist-db: 1.1.0(browserslist@4.23.3)
@@ -4818,7 +4818,7 @@ snapshots:
 
   callsites@3.1.0: {}
 
-  caniuse-lite@1.0.30001651: {}
+  caniuse-lite@1.0.30001653: {}
 
   chalk@2.4.2:
     dependencies:
@@ -5904,7 +5904,7 @@ snapshots:
       '@next/env': 14.2.6
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001651
+      caniuse-lite: 1.0.30001653
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.3.1
@@ -6396,7 +6396,7 @@ snapshots:
       postcss-scss: 4.0.9(postcss@8.4.41)
       stylelint: 16.8.2(typescript@5.5.4)
       stylelint-config-recommended: 14.0.1(stylelint@16.8.2(typescript@5.5.4))
-      stylelint-scss: 6.5.0(stylelint@16.8.2(typescript@5.5.4))
+      stylelint-scss: 6.5.1(stylelint@16.8.2(typescript@5.5.4))
     optionalDependencies:
       postcss: 8.4.41
 
@@ -6423,7 +6423,7 @@ snapshots:
       postcss-sorting: 8.0.2(postcss@8.4.41)
       stylelint: 16.8.2(typescript@5.5.4)
 
-  stylelint-scss@6.5.0(stylelint@16.8.2(typescript@5.5.4)):
+  stylelint-scss@6.5.1(stylelint@16.8.2(typescript@5.5.4)):
     dependencies:
       css-tree: 2.3.1
       is-plain-object: 5.0.0

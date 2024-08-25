@@ -94,10 +94,9 @@ export const ChBxes = (): React.JSX.Element => {
                 onChange={handleCheckboxChange}
                 id="petSecurityIsProtectionOther"
             />
-            <p>
-                Вычисляемое поле:
-                {computedField}
-            </p>
+            <span>
+                {`Вычисляемое поле: ${computedField}`}
+            </span>
         </Form>
     );
 };
