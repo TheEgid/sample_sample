@@ -19,6 +19,12 @@ export const initialPetition: IPetitionFormValues = {
     computedFieldChecker: "INITIAL",
 };
 
+const initialAnotherStoreData = { info: "Initial Info" };
+const $anotherStore = createStore<{ info: string }>(initialAnotherStoreData);
+const setAnotherStoreData = createEvent<{ info: string }>();
+
+$anotherStore.on(setAnotherStoreData, (state, payload) => ({ ...state, ...payload }));
+
 export const $currentPetitionStore = createStore<IPetitionFormValues>(initialPetition, { skipVoid: false });
 
 export const setPetitionFieldFx = createEvent<{ field: keyof IPetitionFormValues, value: ValueOf<IPetitionFormValues> }>();
@@ -40,24 +46,40 @@ const checkFields = (fields: IPetitionFormValues): string =>
         ? "Все заполнено"
         : "Ничего не заполнено";
 
-const calculateComputedFieldEffect = createEffect<{ state: IPetitionFormValues, field: keyof IPetitionFormValues, value: ValueOf<IPetitionFormValues> }, IPetitionFormValues>({
-    handler: ({ state, field, value }) => {
-        const updated = { ...state, [field]: value };
+const calculateComputedFieldEffect = createEffect<{ petitionState: IPetitionFormValues,
+    anotherState: { info: string },
+    field: keyof IPetitionFormValues,
+    value: ValueOf<IPetitionFormValues>
+}, IPetitionFormValues
+>({
+    handler: ({ petitionState, anotherState, field, value }) => {
+        const updated = { ...petitionState, [field]: value };
 
         // Update both computed fields
         updated.computedField = computeFields(updated);
         updated.computedFieldChecker = checkFields(updated);
 
-        // console.log("Updated computedField:", updated.computedField);
-        // console.log("Updated computedFieldChecker:", updated.computedFieldChecker);
+        // Log the data from another store
+        console.log("Updated computedField:", updated.computedField);
+        console.log("Updated computedFieldChecker:", updated.computedFieldChecker);
+        console.log("Data from anotherStore:", anotherState);
+
         return updated;
     },
 });
 
 sample({
     clock: setPetitionFieldFx,
-    source: $currentPetitionStore,
-    fn: (state, { field, value }) => ({ state, field, value }),
+    source: {
+        petitionState: $currentPetitionStore,
+        anotherState: $anotherStore,
+    },
+    fn: (source, { field, value }) => ({
+        petitionState: source.petitionState,
+        anotherState: source.anotherState,
+        field,
+        value,
+    }),
     target: calculateComputedFieldEffect,
 });
 
