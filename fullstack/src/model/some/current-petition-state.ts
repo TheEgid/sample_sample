@@ -25,19 +25,19 @@ export const $currentPetitionStore = createStore<IPetitionFormValues>(initialPet
 
 export const setPetitionFieldFx = createEvent<{ field: keyof IPetitionFormValues, value: ValueOf<IPetitionFormValues> }>();
 
+const computeField = (isBeda: boolean, isCat: boolean, isDog: boolean, isProtectionOther: boolean): string => {
+    if (isBeda && isCat) { return "Beda и Cat активированы"; }
+    if (isDog && !isProtectionOther) { return "Dog активирован"; }
+    if (isProtectionOther && !isDog) { return "Прочая защита активирована"; }
+    return "Ничего не активировано";
+};
+
 const updatePetitionEffect = createEffect<{ state: IPetitionFormValues, field: keyof IPetitionFormValues, value: ValueOf<IPetitionFormValues> }, IPetitionFormValues>({
     handler: ({ state, field, value }) => {
         const updtd = { ...state, [field]: value };
 
-        const computeField = (isBeda: boolean, isCat: boolean, isDog: boolean, isProtectionOther: boolean): string => {
-            if (isBeda && isCat) { return "Beda и Cat активированы"; }
-            if (isDog) { return "Dog активирован"; }
-            if (isProtectionOther) { return "Прочая защита активирована"; }
-            return "Ничего не активировано";
-        };
-
         updtd.computedField = computeField(updtd.petRiskIsBeda, updtd.petRiskIsCat, updtd.petRiskIsDog, updtd.petSecurityIsProtectionOther);
-
+        console.log("updtd.computedField", updtd.computedField);
         return updtd;
     },
 });

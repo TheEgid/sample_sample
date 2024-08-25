@@ -52,7 +52,7 @@ export const ImageComponent = (): React.JSX.Element => {
 };
 
 export const ChBxes = (): React.JSX.Element => {
-    const current = useUnit($currentPetitionStore);
+    const { petRiskIsBeda, petRiskIsCat, petRiskIsDog, petSecurityIsProtectionOther, computedField } = useUnit($currentPetitionStore);
 
     const handleCheckboxChange = (event: { target: { name: any, checked: any } }): void => {
         const { name, checked } = event.target;
@@ -63,36 +63,40 @@ export const ChBxes = (): React.JSX.Element => {
     return (
         <Form>
             <Form.Check
+                label="БЕДА"
                 type="checkbox"
                 name="petRiskIsBeda"
-                checked={current.petRiskIsBeda}
+                checked={petRiskIsBeda}
                 onChange={handleCheckboxChange}
                 id="petRiskIsBeda"
             />
             <Form.Check
+                label="Кот"
                 type="checkbox"
                 name="petRiskIsCat"
-                checked={current.petRiskIsCat}
+                checked={petRiskIsCat}
                 onChange={handleCheckboxChange}
                 id="petRiskIsCat"
             />
             <Form.Check
+                label="Собака"
                 type="checkbox"
                 name="petRiskIsDog"
-                checked={current.petRiskIsDog}
+                checked={petRiskIsDog}
                 onChange={handleCheckboxChange}
                 id="petRiskIsDog"
             />
             <Form.Check
+                label="Прочая защита"
                 type="checkbox"
                 name="petSecurityIsProtectionOther"
-                checked={current.petSecurityIsProtectionOther}
+                checked={petSecurityIsProtectionOther}
                 onChange={handleCheckboxChange}
                 id="petSecurityIsProtectionOther"
             />
             <p>
                 Вычисляемое поле:
-                {current.computedField}
+                {computedField}
             </p>
         </Form>
     );
