@@ -51,7 +51,7 @@ export const ImageComponent = (): React.JSX.Element => {
     );
 };
 
-export const ChBxes = (): React.JSX.Element => {
+const ChBxes = (): React.JSX.Element => {
     const { petRiskIsBeda, petRiskIsCat, petRiskIsDog, petSecurityIsProtectionOther, computedField } = useUnit($currentPetitionStore);
 
     const handleCheckboxChange = (event: { target: { name: any, checked: any } }): void => {
@@ -100,3 +100,5 @@ export const ChBxes = (): React.JSX.Element => {
         </Form>
     );
 };
+
+export default ChBxes;

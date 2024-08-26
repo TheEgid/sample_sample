@@ -1,13 +1,13 @@
 import React from "react";
 import { useUnit } from "effector-react";
 import Head from "next/head";
-import { Container, Spinner } from "react-bootstrap";
+import { Button, Container, Spinner } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
-import { ChBxes, DataDisplayWithIncrement, ImageComponent } from "./ElementsOthers";
+import ChBxes, { DataDisplayWithIncrement, ImageComponent } from "./ElementsOthers";
 import ExpandableDiv from "@/components/ExpandableDiv";
 import FancyboxExample from "@/components/ModalContent";
 import NewElement from "@/components/Sub";
-import { $currentPetitionStore } from "@/model/some/current-petition-state";
+import { $currentPetitionStore, checkPetitionFieldFx } from "@/model/some/current-petition-state";
 import { $addBlogItemStatus } from "@/model/some/state";
 
 const Home: React.FC = () => {
@@ -26,6 +26,9 @@ const Home: React.FC = () => {
                 <div style={{ display: "flex" }}>
                     <ChBxes />
                 </div>
+                <Button variant="success" onClick={() => checkPetitionFieldFx()}>
+                    Click Me!
+                </Button>
                 <NewElement />
                 <div className="hello">
                     <ExpandableDiv />
