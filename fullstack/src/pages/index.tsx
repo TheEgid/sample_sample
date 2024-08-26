@@ -12,7 +12,7 @@ import { $addBlogItemStatus } from "@/model/some/state";
 
 const Home: React.FC = () => {
     const { loading, error } = useUnit($addBlogItemStatus);
-    const { computedFieldChecker } = useUnit($currentPetitionStore);
+    const { checkedFields: computedFieldChecker } = useUnit($currentPetitionStore);
 
     return (
         <>

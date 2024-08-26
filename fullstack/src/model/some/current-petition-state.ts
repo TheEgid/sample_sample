@@ -7,7 +7,7 @@ export interface IPetitionFormValues {
     petRiskIsDog: boolean,
     petSecurityIsProtectionOther: boolean,
     computedField: string,
-    computedFieldChecker: string
+    checkedFields: string
 }
 
 export const initialPetition: IPetitionFormValues = {
@@ -16,8 +16,10 @@ export const initialPetition: IPetitionFormValues = {
     petRiskIsDog: false,
     petSecurityIsProtectionOther: false,
     computedField: " ",
-    computedFieldChecker: "INITIAL",
+    checkedFields: "INITIAL",
 };
+
+export const $currentPetitionStore = createStore<IPetitionFormValues>(initialPetition, { skipVoid: false });
 
 const initialAnotherStoreData = { info: "Initial Info" };
 const $anotherStore = createStore<{ info: string }>(initialAnotherStoreData);
@@ -25,11 +27,7 @@ const setAnotherStoreData = createEvent<{ info: string }>();
 
 $anotherStore.on(setAnotherStoreData, (state, payload) => ({ ...state, ...payload }));
 
-export const $currentPetitionStore = createStore<IPetitionFormValues>(initialPetition, { skipVoid: false });
-
-export const setPetitionFieldFx = createEvent<{ field: keyof IPetitionFormValues, value: ValueOf<IPetitionFormValues> }>();
-
-const computeFields = (fields: IPetitionFormValues): string => {
+const computeMyGoodFields = (fields: IPetitionFormValues): string => {
     const keys: Array<keyof IPetitionFormValues> = [
         "petRiskIsBeda",
         "petRiskIsCat",
@@ -40,29 +38,24 @@ const computeFields = (fields: IPetitionFormValues): string => {
 
     return foundKey ?? "";
 };
-const checkFields = (fields: IPetitionFormValues): string =>
-    (["petRiskIsBeda", "petRiskIsCat", "petRiskIsDog", "petSecurityIsProtectionOther"] as (keyof IPetitionFormValues)[])
-        .every(key => fields[key])
-        ? "Все заполнено"
-        : "Ничего не заполнено";
+
+export const setPetitionFieldFx = createEvent<{ field: keyof IPetitionFormValues, value: ValueOf<IPetitionFormValues> }>();
 
 const calculateComputedFieldEffect = createEffect<{ petitionState: IPetitionFormValues,
-    anotherState: { info: string },
+    // anotherState: { info: string },
     field: keyof IPetitionFormValues,
     value: ValueOf<IPetitionFormValues>
 }, IPetitionFormValues
 >({
-    handler: ({ petitionState, anotherState, field, value }) => {
+    handler: ({ petitionState, field, value }) => {
         const updated = { ...petitionState, [field]: value };
 
-        // Update both computed fields
-        updated.computedField = computeFields(updated);
-        updated.computedFieldChecker = checkFields(updated);
+        // updated.computedField = computeMyGoodFields(updated);
+        // updated.checkedFields = checkFields(updated);
 
-        // Log the data from another store
-        console.log("Updated computedField:", updated.computedField);
-        console.log("Updated computedFieldChecker:", updated.computedFieldChecker);
-        console.log("Data from anotherStore:", anotherState);
+        // console.log("Updated computedField:", updated.computedField);
+        // // console.log("Checker:", updated.checkedFields);
+        // console.log("Data from anotherStore:", anotherState);
 
         return updated;
     },
@@ -72,11 +65,11 @@ sample({
     clock: setPetitionFieldFx,
     source: {
         petitionState: $currentPetitionStore,
-        anotherState: $anotherStore,
+        // anotherState: $anotherStore,
     },
     fn: (source, { field, value }) => ({
         petitionState: source.petitionState,
-        anotherState: source.anotherState,
+        // anotherState: source.anotherState,
         field,
         value,
     }),
@@ -85,6 +78,6 @@ sample({
 
 $currentPetitionStore.on(calculateComputedFieldEffect.doneData, (_state, updatedPetition) => updatedPetition);
 
-// $currentPetitionStore.watch((el) => {
-//     console.log(el);
-// });
+$currentPetitionStore.watch((el) => {
+    console.log(el);
+});
