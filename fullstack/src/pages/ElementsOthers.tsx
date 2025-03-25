@@ -29,7 +29,6 @@ export const DataDisplayWithIncrement = (): React.JSX.Element => {
             </Button>
             <p></p>
             {allData.map((x: any, index: number) => (
-                // eslint-disable-next-line sonarjs/no-array-index-key
                 <p key={index}>{x?.length > 0 ? x : "_"}</p>
             ))}
         </div>

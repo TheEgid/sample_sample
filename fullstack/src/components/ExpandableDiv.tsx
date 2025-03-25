@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/mouse-events-a11y */
 import React, { useState } from "react";
 
 const ExpandableDiv = (): React.JSX.Element => {

@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "prisma/prisma";
+import prisma from "../../../prisma/my-prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 async function checkPostgresConnection(): Promise<string | null | undefined> {
     try {
-        const users = await prisma.user.findMany().then((e) => e);
+        const users = await prisma.user.findMany().then((e: any) => e);
 
         return users?.[0].name;
     }
