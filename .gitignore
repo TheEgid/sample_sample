@@ -163,3 +163,5 @@ fullstack/prisma/generated
 fullstack/prisma/generated/*
 fullstack/generated
 fullstack/generated/*
+
+.repomix
