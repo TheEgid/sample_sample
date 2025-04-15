@@ -158,3 +158,8 @@ MANIFEST
 /fullstack/public/robots.txt
 
 /fullstack/next-env.d.ts
+
+fullstack/prisma/generated
+fullstack/prisma/generated/*
+fullstack/generated
+fullstack/generated/*

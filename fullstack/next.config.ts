@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     devIndicators: false,
     // output: "standalone",
     images: {
-        domains: ["media.istockphoto.com"],
+        remotePatterns: [new URL("https://media.istockphoto.com")],
     },
 };
 
